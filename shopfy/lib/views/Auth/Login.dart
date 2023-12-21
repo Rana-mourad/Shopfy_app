@@ -1,14 +1,7 @@
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:provider/provider.dart';
-import 'package:shopfy/Controller/Logincontroller.dart';
-import 'package:shopfy/Provider/Auth_Provider.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:shopfy/theme/Appcolor.dart';
-import 'package:shopfy/theme/customcard.dart';
-import 'package:shopfy/views/Auth/Signup.dart';
-import 'package:shopfy/widgets/custombutton.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopfy/Provider/Auth_Provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -25,9 +18,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void dispose() {
+  void deactivate() {
     Provider.of<AppAuthProvider>(context, listen: false).dispose();
-    super.dispose();
+    super.deactivate();
   }
 
   @override
@@ -46,122 +39,116 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CustomCard(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              child: Column(
+                          Image.asset(
+                            'assets/images/logo.png',
+                            height: 200,
+                            width: 300,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text('Login'),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.emailAddress,
+                            controller: appAuthProvider.emailController,
+                            validator: (value) {
+                              if (value == null || value == '') {
+                                return 'email is required';
+                              }
+                              if (!EmailValidator.validate(value)) {
+                                return 'Enter Valid Email';
+                              } else {
+                                if (!value.split('@').last.contains('gmail')) {
+                                  return 'Enter Valid Gmail';
+                                }
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              label: const Text('Email'),
+                              suffixIcon: const Icon(Icons.mail),
+                              // fillColor: Colors.red,
+                              isDense: true,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                            obscureText: appAuthProvider.obscureText,
+                            controller: appAuthProvider.passwordController,
+                            validator: (value) {
+                              if (value == null || value == '') {
+                                return 'password is required';
+                              }
+                              if (value.length < 8) {
+                                return 'Password length must be 8';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              label: const Text('Password'),
+                              suffixIcon: InkWell(
+                                onTap: () {
+                                  appAuthProvider.toggleObscure();
+                                },
+                                child: appAuthProvider.obscureText
+                                    ? const Icon(Icons.visibility_off)
+                                    : const Icon(Icons.visibility),
+                              ),
+
+                              // fillColor: Colors.red,
+                              isDense: true,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () =>
+                                  appAuthProvider.openSignupPage(context),
+                              child: Row(
                                 children: [
-                                  TextFormField(
-                                    keyboardType: TextInputType.emailAddress,
-                                    controller: appAuthProvider.emailController,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Email is required';
-                                      }
-                                      if (!EmailValidator.validate(value)) {
-                                        return 'Enter a valid email';
-                                      } else if (!value
-                                          .split('@')
-                                          .last
-                                          .contains('gmail')) {
-                                        return 'Enter a valid Gmail address';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: InputDecoration(
-                                      label: const Text('Email'),
-                                      suffixIcon: const Icon(Icons.mail),
-                                      isDense: true,
-                                      filled: true,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  TextFormField(
-                                    obscureText: appAuthProvider.obscureText,
-                                    controller:
-                                        appAuthProvider.passwordController,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Password is required';
-                                      }
-                                      if (value.length < 8) {
-                                        return 'Password length must be at least 8 characters';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: InputDecoration(
-                                      label: const Text('Password'),
-                                      suffixIcon: InkWell(
-                                        onTap: () {
-                                          appAuthProvider.toggleObscure();
-                                        },
-                                        child: appAuthProvider.obscureText
-                                            ? const Icon(Icons.visibility_off)
-                                            : const Icon(Icons.visibility),
-                                      ),
-                                      isDense: true,
-                                      filled: true,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  GetBuilder<LoginController>(
-                                    builder: (controller) {
-                                      return CustomButton(
-                                        onTap: controller.isLoading
-                                            ? null
-                                            : () async {
-                                                controller.login();
-                                              },
-                                        text: "LOG IN",
-                                        buttonColor: controller.isLoading
-                                            ? Colors.brown
-                                            : AppColor.primaryColor,
-                                      );
-                                    },
-                                  ),
-                                  const SizedBox(height: 40),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 40),
-                                    child: RichText(
-                                      textAlign: TextAlign.center,
-                                      text: TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text:
-                                                "Don’t have an account? Swipe right to ",
+                                  RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(color: Colors.black),
+                                      text: 'Don\'t Have Account ?',
+                                      children: [
+                                        TextSpan(
+                                            text: ' Create New',
                                             style: TextStyle(
-                                                color: AppColor.fontColor),
-                                          ),
-                                          TextSpan(
-                                            text: "create a new account.",
-                                            style: TextStyle(
-                                                color: AppColor.primaryColor),
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SignupPage()),
-                                                );
-                                              },
-                                          ),
-                                        ],
-                                      ),
+                                                color: Theme.of(context)
+                                                    .primaryColor))
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              await appAuthProvider.login(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(300, 60),
+                            ),
+                            child: const Text('Login'),
+                          )
                         ],
                       ),
                     ),
