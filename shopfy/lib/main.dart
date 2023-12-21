@@ -1,8 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopfy/Provider/Auth_Provider.dart';
 import 'package:shopfy/Provider/HomeProvider.dart';
+import 'package:shopfy/Provider/ProductProvider.dart';
+import 'package:shopfy/Provider/category.provider.dart';
 import 'package:shopfy/firebase_options.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -22,13 +25,19 @@ void main() async {
   var result = GetIt.I.allReadySync();
 
   if (result == true) {
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> prefrences set successfully');
+    if (kDebugMode) {
+      print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> prefrences set successfully');
+    }
   } else {
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error When Set prefrences');
+    if (kDebugMode) {
+      print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error When Set prefrences');
+    }
   }
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AppAuthProvider()),
+    Provider(create: (_) => CategoryProvider()),
+    Provider(create: (_) => ProductProvider()),
     ChangeNotifierProvider(create: (_) => HomeProvider())
   ], child: const MyApp()));
 }
@@ -42,7 +51,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Shopify Application',
       theme: ThemeUtils.themeData,
-      home: SplashPage(),
+      home: const SplashPage(),
     );
   }
 }
