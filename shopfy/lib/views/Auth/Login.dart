@@ -1,7 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopfy/Provider/Auth_Provider.dart';
+import 'package:shopfy/Provider/AppAuthProvider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
