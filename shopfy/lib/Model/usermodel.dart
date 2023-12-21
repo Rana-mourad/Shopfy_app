@@ -19,14 +19,14 @@ class UserModel {
   });
 
   UserModel.fromJson(Map<String, dynamic> data) {
-    this.uId = data["uId"] ?? "uId";
-    this.username = data["username"] ?? "username";
-    this.email = data["email"] ?? "email";
-    this.image = data["image"] ?? "image";
-    this.dateOfRegister = data["dateOfRegister"];
-    this.phoneNumber = data["phoneNumber"];
-    this.country = data["country"];
-    this.address = data["address"];
+    uId = data["uId"] ?? "uId";
+    username = data["username"] ?? "username";
+    email = data["email"] ?? "email";
+    image = data["image"] ?? "image";
+    dateOfRegister = data["dateOfRegister"];
+    phoneNumber = data["phoneNumber"];
+    country = data["country"];
+    address = data["address"];
   }
 
   Map<String, dynamic> get toMap {
