@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:shopfy/Controller/forgotpassord.dart';
-import 'package:shopfy/theme/customcard.dart';
-import 'package:shopfy/theme/customformfield.dart';
-import 'package:shopfy/widgets/custombutton.dart';
+import 'package:shopfy/views/Auth/Login.dart';
+import 'package:shopfy/views/Auth/Signup.dart';
 
-class ForgotPasswordPage extends StatefulWidget {
-  const ForgotPasswordPage({Key? key}) : super(key: key);
+class AuthPage extends StatefulWidget {
+  const AuthPage({Key? key}) : super(key: key);
 
   @override
-  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+  State<AuthPage> createState() => _AuthPageState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  late ForgotPasswordController forgotPasswordController;
+class _AuthPageState extends State<AuthPage> {
+  late GlobalKey<FormState> formKey;
+  late TextEditingController emailController;
 
   @override
   void initState() {
-    forgotPasswordController = ForgotPasswordController();
+    formKey = GlobalKey<FormState>();
+    emailController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    forgotPasswordController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
@@ -32,52 +31,116 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GetBuilder<ForgotPasswordController>(
-            builder: (restPasswordController) {
-              return buildPasswordResetForm(forgotPasswordController);
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildPasswordResetForm(ForgotPasswordController controller) {
-    return Form(
-      key: controller.formKey,
-      child: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.75,
-                child: Text(
-                  "Enter the email address you used to create your account, and we will email you a link to reset your password",
-                  style: TextStyle(fontSize: 15),
-                ),
-              ),
-              SizedBox(height: 20),
-              CustomCard(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: SafeArea(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CustomFormField(
-                      labelText: "EMAIL",
-                      imageSvgPath: "assets/images/001-mail.svg",
-                      controller: controller.email,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Forgot Password',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF515C6F),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUpPage()),
+                            );
+                          },
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 232, 122, 112),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Enter the email address you used to create your account, and we will email you a link to reset your password.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFF515C6F),
+                        fontWeight: FontWeight.w300,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        prefixIcon: const Icon(
+                          Icons.mail,
+                          color: Color(0xFF727C8E),
+                        ),
+                        labelStyle: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF515C6F),
+                        ),
+                        isDense: true,
+                        filled: true,
+                        fillColor: Color.fromARGB(255, 228, 232, 238),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(300, 60),
+                        primary: Color(0xFFFF6969),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Send Email',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Icon(Icons.chevron_right, color: Colors.white),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 20),
-              CustomButton(
-                onTap: () async {
-                  await controller.sendPasswordResetEmail();
-                },
-                text: "SEND EMAIL",
-              ),
-            ],
+            ),
           ),
         ),
       ),
