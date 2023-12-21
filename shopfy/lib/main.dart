@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shopfy/Provider/Auth_Provider.dart';
+import 'package:shopfy/Provider/AppAuthProvider.dart';
 import 'package:shopfy/Provider/HomeProvider.dart';
 import 'package:shopfy/Provider/ProductProvider.dart';
 import 'package:shopfy/Provider/category.provider.dart';
