@@ -1,34 +1,34 @@
-import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shopfy/Model/adsmodel.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:shopfy/Model/productmodel.dart';
 
-class ProductProvider extends ChangeNotifier {
-  List<Product> products = <Product>[];
-  List<Ads> adsdata = <Ads>[];
+class ProductProvider {
+  Future<List<Product>?> getProducts(BuildContext context, {int? limit}) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>>? result;
+      if (limit != null) {
+        result = await FirebaseFirestore.instance
+            .collection('products')
+            .limit(limit)
+            .get();
+      } else {
+        result = await FirebaseFirestore.instance.collection('products').get();
+      }
 
-  ProductProvider() {}
-  String getAdsImage(int index) {
-    return adsdata[index].picture.toString();
-  }
+      if (result.docs.isNotEmpty) {
+        var productsList = List<Product>.from(
+            result.docs.map((e) => Product.fromJson(e.data(), e.id))).toList();
 
-  void addProduct(Product newProduct) {
-    products.add(newProduct);
-    notifyListeners();
-  }
-
-  void removeProduct(int productNum) {
-    products.removeAt(productNum);
-    notifyListeners();
-  }
-
-  int get productsNum => products.length;
-
-  Product getProduct(int index) {
-    return products[index];
-  }
-
-  String? getProductName(int index) {
-    return products[index].name;
+        return productsList;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      if (!context.mounted) return null;
+      await QuickAlert.show(
+          context: context, type: QuickAlertType.error, title: e.toString());
+      return null;
+    }
   }
 }
