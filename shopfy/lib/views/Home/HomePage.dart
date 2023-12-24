@@ -62,9 +62,9 @@ class _HomePageState extends State<HomePage> {
               height: 10,
             ),
             Consumer<HomeProvider>(
-              builder: (__, homeProvider, _) {
+              builder: (__, HomeProvider, _) {
                 return FutureBuilder(
-                  future: homeProvider.getAds(context, limit: 3),
+                  future: HomeProvider.getAds(context, limit: 3),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
