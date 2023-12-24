@@ -4,18 +4,17 @@ import 'package:quickalert/quickalert.dart';
 import 'package:shopfy/Model/category_model.dart';
 
 class CategoryProvider {
-  Future<List<CategoryData>?> getCategories(BuildContext context,
+  Future<List<CategoryData>?> getCategory(BuildContext context,
       {int? limit}) async {
     try {
       QuerySnapshot<Map<String, dynamic>>? result;
       if (limit != null) {
         result = await FirebaseFirestore.instance
-            .collection('categories')
+            .collection('category')
             .limit(limit)
             .get();
       } else {
-        result =
-            await FirebaseFirestore.instance.collection('categories').get();
+        result = await FirebaseFirestore.instance.collection('category').get();
       }
 
       if (result.docs.isNotEmpty) {
