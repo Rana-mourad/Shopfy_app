@@ -149,7 +149,7 @@ class AppAuthProvider extends ChangeNotifier {
   void openSignupPage(BuildContext context) {
     if (context.mounted) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const SignUpPage()));
+          context, MaterialPageRoute(builder: (_) => const SignupPage()));
     }
   }
 }
