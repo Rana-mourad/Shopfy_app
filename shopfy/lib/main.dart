@@ -1,14 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopfy/Provider/AppAuthProvider.dart';
 import 'package:shopfy/Provider/HomeProvider.dart';
 import 'package:shopfy/Provider/ProductProvider.dart';
 import 'package:shopfy/Provider/category.provider.dart';
 import 'package:shopfy/firebase_options.dart';
-import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 import 'package:shopfy/theme/themeutils.dart';
 import 'package:shopfy/views/splash.dart';
 
@@ -25,13 +24,9 @@ void main() async {
   var result = GetIt.I.allReadySync();
 
   if (result == true) {
-    if (kDebugMode) {
-      print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> prefrences set successfully');
-    }
+    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> prefrences set successfully');
   } else {
-    if (kDebugMode) {
-      print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error When Set prefrences');
-    }
+    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error When Set prefrences');
   }
 
   runApp(MultiProvider(providers: [
@@ -49,9 +44,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Shopify Application',
+      title: 'Shopfy Application',
       theme: ThemeUtils.themeData,
-      home: const SplashPage(),
+      home: SplashPage(),
     );
   }
 }
