@@ -5,49 +5,31 @@ import 'package:shopfy/Model/adsmodel.dart';
 
 class HomeProvider extends ChangeNotifier {
   List<Ads>? adList;
+}
 
-  void initHomeProvider() async {
-    await getAds();
-  }
-
-  Future<void> getAds({int? limit}) async {
-    try {
-      QuerySnapshot<Map<String, dynamic>>? result;
-      if (limit != null) {
-        result = await FirebaseFirestore.instance
-            .collection('ads')
-            .limit(limit)
-            .get();
-      } else {
-        result = await FirebaseFirestore.instance.collection('ads').get();
-      }
-
-      if (result.docs.isNotEmpty) {
-        adList = List<Ads>.from(
-          result.docs.map((e) => Ads.fromJson(e.data(), e.id)),
-        ).toList();
-
-        notifyListeners();
-      } else {
-        adList = [];
-        notifyListeners();
-      }
-    } catch (e) {
-      print('Error fetching ads: $e');
+Future<List<Ads>?> getAds(BuildContext context, {int? limit}) async {
+  try {
+    QuerySnapshot<Map<String, dynamic>>? result;
+    if (limit != null) {
+      result =
+          await FirebaseFirestore.instance.collection('Ads').limit(limit).get();
+    } else {
+      result = await FirebaseFirestore.instance.collection('Ads').get();
     }
-  }
 
-  Future<void> showAlertDialog({
-    required BuildContext context,
-    required String title,
-    required String content,
-  }) async {
-    if (!context.mounted) return;
+    if (result.docs.isNotEmpty) {
+      var AdsList =
+          List<Ads>.from(result.docs.map((e) => Ads.fromJson(e.data(), e.id)))
+              .toList();
+
+      return AdsList;
+    } else {
+      return [];
+    }
+  } catch (e) {
+    if (!context.mounted) return null;
     await QuickAlert.show(
-      context: context,
-      type: QuickAlertType.error,
-      title: title,
-      text: content,
-    );
+        context: context, type: QuickAlertType.error, title: e.toString());
+    return null;
   }
 }
