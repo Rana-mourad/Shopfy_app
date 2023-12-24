@@ -16,13 +16,16 @@ class _MasterPageState extends State<MasterPage> {
   List<Widget> _pages = [
     HomePage(),
     Text(
-      'Categories Page',
+      'Search Page',
+    ),
+    Text(
+      'cart Page',
     ),
     Text(
       'Profile Page',
     ),
     Text(
-      'Cart Page',
+      'More Page',
     ),
   ];
   @override
