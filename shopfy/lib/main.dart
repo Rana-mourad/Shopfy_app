@@ -33,7 +33,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => AppAuthProvider()),
     Provider(create: (_) => CategoryProvider()),
     Provider(create: (_) => ProductProvider()),
-    ChangeNotifierProvider(create: (_) => HomeProvider())
+    Provider(create: (_) => HomeProvider())
   ], child: const MyApp()));
 }
 
