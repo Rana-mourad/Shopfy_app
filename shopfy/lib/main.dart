@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopfy/Provider/AppAuthProvider.dart';
 import 'package:shopfy/Provider/HomeProvider.dart';
+import 'package:shopfy/Provider/NotifactionProvider.dart';
 import 'package:shopfy/Provider/ProductProvider.dart';
+import 'package:shopfy/Provider/cartProvider.dart';
 import 'package:shopfy/Provider/category.provider.dart';
 import 'package:shopfy/firebase_options.dart';
 import 'package:shopfy/theme/themeutils.dart';
@@ -33,6 +35,8 @@ void main() async {
     ChangeNotifierProvider(create: (_) => AppAuthProvider()),
     Provider(create: (_) => CategoryProvider()),
     Provider(create: (_) => ProductProvider()),
+    Provider(create: (_) => CartProvider()),
+    Provider(create: (_) => NotificationProvider()),
     Provider(create: (_) => HomeProvider())
   ], child: const MyApp()));
 }
