@@ -15,8 +15,12 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.fontColor = Colors.white,
     this.colorOfBackgroundIcon = Colors.white,
+    this.icon,
     Key? key,
+    required IconData Icon,
+    required void Function() onBtnPressed,
   }) : super(key: key);
+
   final String text;
   final Color buttonColor;
   final void Function()? onTap;
@@ -27,6 +31,7 @@ class CustomButton extends StatelessWidget {
   final Color fontColor;
   final Color colorOfBackgroundIcon;
   final double? width;
+  final Icon? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,7 @@ class CustomButton extends StatelessWidget {
             BoxShadow(
               color: shadowColor.withOpacity(0.3),
               blurRadius: 5,
-              offset: Offset(0, 7),
+              offset: const Offset(0, 7),
             ),
           ],
         ),
@@ -52,7 +57,7 @@ class CustomButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(),
+              if (icon != null) icon!,
               Text(
                 text,
                 style: TextStyle(
