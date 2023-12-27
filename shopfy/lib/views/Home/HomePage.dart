@@ -116,7 +116,10 @@ class _HomePageState extends State<HomePage> {
                             axisCount: GridLayoutEnum.threeElementsInRow,
                             shrinkWrap: true,
                             children: snapshot.data
-                                    ?.map((e) => ProductWidget(product: e))
+                                    ?.map((e) => ProductWidget(
+                                          product: e,
+                                          onTap: () {},
+                                        ))
                                     .toList() ??
                                 [],
                           );
@@ -148,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                   if (result?.files.first.bytes != null) {
                     var uploadResult = await refrence.putData(
                         result!.files.first.bytes!,
-                        SettableMetadata(contentType: 'image/png'));
+                        SettableMetadata(contentType: 'products/image.png'));
 
                     if (uploadResult.state == TaskState.success) {
                       print(
