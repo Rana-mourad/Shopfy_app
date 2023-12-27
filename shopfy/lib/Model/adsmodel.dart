@@ -2,6 +2,7 @@ class Ads {
   String? id;
   String? title;
   String? picture;
+  DateTime? createdAt;
 
   Ads();
 
@@ -9,6 +10,10 @@ class Ads {
     id = docId;
     title = json['title'];
     picture = json['picture'];
+    createdAt = json['createdAt'] != null
+        ? DateTime.fromMillisecondsSinceEpoch(
+            json['createdAt'].millisecondsSinceEpoch)
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -16,6 +21,7 @@ class Ads {
     adsdata['id'] = id;
     adsdata['title'] = title;
     adsdata['picture'] = picture;
+    adsdata['createdAt'] = createdAt;
     return adsdata;
   }
 }
