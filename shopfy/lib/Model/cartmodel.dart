@@ -1,56 +1,40 @@
-class CartModel {
-  int? id;
+class Cart {
+  List<CartItem>? items;
+
+  Cart();
+
+  Cart.fromJson(Map<String, dynamic> data) {
+    items = data['items'] != null
+        ? List.from(data['items'].map((e) => CartItem.fromJson(e)))
+        : null;
+  }
+
+  Map<String, dynamic> toJson() => {
+        "items": items?.map((e) => e.toJson()),
+      };
+}
+
+class CartItem {
+  String? itemId;
+  Map<String, dynamic>? selectedVarints;
   String? productId;
-  String? image;
-  String? title;
-  String? subTitle;
-  String? color;
-  String? size;
-  double? price;
   int? quantity;
 
-  CartModel({
-    this.id,
-    this.title,
-    this.price,
-    this.quantity,
-    this.productId,
-    this.subTitle,
-    this.image,
-    this.color,
-    this.size,
-  });
+  CartItem();
 
-  Map<String, dynamic> toMap() {
-    return {
-      if (id != null) 'id': id,
-      'productId': productId,
-      'image': image,
-      'subTitle': subTitle,
-      'title': title,
-      'price': price,
-      'quantity': quantity,
-      'color': color,
-      'size': size,
-    };
+  CartItem.fromJson(Map<String, dynamic> data) {
+    itemId = data['itemId'];
+    productId = data['productId'];
+    quantity = data['quantity'];
+    selectedVarints = data['selectedVarints'] != null
+        ? Map<String, dynamic>.from(data['selectedVarints'])
+        : null;
   }
 
-  factory CartModel.fromMap(Map<String, dynamic> map) {
-    return CartModel(
-      id: map['id'],
-      productId: map['productId'],
-      title: map['title'],
-      subTitle: map['subTitle'],
-      image: map['image'],
-      color: map['color'],
-      size: map['size'],
-      price: map['price']?.toDouble(),
-      quantity: map['quantity']?.toInt(),
-    );
-  }
-
-  @override
-  String toString() {
-    return 'CartModel(id: $id, productId: $productId, title: $title, subTitle: $subTitle, image: $image, color: $color, size: $size, price: $price, quantity: $quantity)';
-  }
+  Map<String, dynamic> toJson() => {
+        "itemId": itemId,
+        "selectedVarints": selectedVarints,
+        "productId": productId,
+        "quantity": quantity,
+      };
 }
