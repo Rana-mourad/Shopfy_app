@@ -5,7 +5,7 @@ class OrderModel {
   String? id;
   double? totalPrice;
   String? dateTime;
-  List<CartModel>? carts = [];
+  List<CartItem>? carts = [];
   ShippingAddressModel? shippingAddress;
   OrderModel({
     this.totalPrice,
@@ -21,7 +21,7 @@ class OrderModel {
       'totalPrice': totalPrice,
       'dateTime': dateTime,
       'shippingAddress': shippingAddress?.toMap(),
-      'carts': carts?.map<Map<String, dynamic>>((x) => x.toMap()).toList(),
+      'carts': carts?.map<Map<String, dynamic>>((e) => e.toJson()),
     };
   }
 
@@ -32,7 +32,7 @@ class OrderModel {
       totalPrice: map['totalPrice']?.toDouble(),
       dateTime: map['dateTime'],
       carts: map['carts'] != null
-          ? List<CartModel>.from(map['carts']?.map((x) => CartModel.fromMap(x)))
+          ? List<CartItem>.from(map['carts']?.map((e) => CartItem.fromJson(e)))
           : null,
     );
   }
