@@ -9,20 +9,21 @@ import 'package:shopfy/views/Auth/Signup.dart';
 import 'package:shopfy/views/masterpage.dart';
 
 class AppAuthProvider extends ChangeNotifier {
-  late GlobalKey<FormState> formKey;
-  late TextEditingController emailController;
-  late TextEditingController passwordController;
+  GlobalKey<FormState>? formKey;
+  TextEditingController? emailController;
+  TextEditingController? passwordController;
   bool obscureText = true;
 
-  void init() {
+  void init() async {
     formKey = GlobalKey<FormState>();
     emailController = TextEditingController();
     passwordController = TextEditingController();
   }
 
   void providerDispose() {
-    emailController.dispose();
-    passwordController.dispose();
+    emailController = null;
+    passwordController = null;
+    formKey = null;
   }
 
   void toggleObscure() {
@@ -31,17 +32,19 @@ class AppAuthProvider extends ChangeNotifier {
   }
 
   Future<void> login(BuildContext context) async {
-    if ((formKey.currentState?.validate() ?? false)) {
+    if ((formKey?.currentState?.validate() ?? false)) {
       try {
         QuickAlert.show(context: context, type: QuickAlertType.loading);
         var credintials = await FirebaseAuth.instance
             .signInWithEmailAndPassword(
-                email: emailController.text, password: passwordController.text);
+                email: emailController?.text ?? '',
+                password: passwordController?.text ?? '');
         if (context.mounted) {
           Navigator.pop(context);
           if (credintials.user != null) {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (_) => const MasterPage()));
+            providerDispose();
           } else {
             await QuickAlert.show(
                 context: context,
@@ -74,19 +77,20 @@ class AppAuthProvider extends ChangeNotifier {
         await QuickAlert.show(
             context: context,
             type: QuickAlertType.error,
-            title: 'Login Error $e');
+            title: 'Login Error ${e}');
       }
     }
   }
 
   Future<void> signUp(BuildContext context) async {
-    if ((formKey.currentState?.validate() ?? false)) {
+    if ((formKey?.currentState?.validate() ?? false)) {
       try {
         QuickAlert.show(context: context, type: QuickAlertType.loading);
 
         var credintials = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
-                email: emailController.text, password: passwordController.text);
+                email: emailController?.text ?? '',
+                password: passwordController?.text ?? '');
 
         if (context.mounted) {
           Navigator.pop(context);
@@ -99,6 +103,7 @@ class AppAuthProvider extends ChangeNotifier {
             if (context.mounted) {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (_) => const MasterPage()));
+              providerDispose();
             }
           } else {
             await QuickAlert.show(
@@ -128,7 +133,7 @@ class AppAuthProvider extends ChangeNotifier {
         await QuickAlert.show(
             context: context,
             type: QuickAlertType.error,
-            title: 'Signup Error $e');
+            title: 'Signup Error ${e}');
       }
     }
   }
@@ -140,13 +145,13 @@ class AppAuthProvider extends ChangeNotifier {
 
     await FirebaseAuth.instance.signOut();
     await GetIt.I.get<SharedPreferences>().clear();
-
     Navigator.pop(contextEx);
     Navigator.pushReplacement(
         contextEx, MaterialPageRoute(builder: (_) => const LoginPage()));
   }
 
   void openSignupPage(BuildContext context) {
+    providerDispose();
     if (context.mounted) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => const SignupPage()));
