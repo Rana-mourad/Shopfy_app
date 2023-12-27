@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:shopfy/views/Home/HomePage.dart';
+import 'package:shopfy/widgets/appbar.dart';
 
 class MasterPage extends StatefulWidget {
   const MasterPage({Key? key}) : super(key: key);
@@ -81,15 +82,9 @@ class _MasterPageState extends State<MasterPage> {
           );
         },
       ),
-      appBar: AppBar(
-        title: Text(
-          'Let\'s Have Shopping',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Color(0xFF515C6F),
-      ),
+      appBar: AppBarEx.getAppBar,
       body: Column(
-        children: <Widget>[_pages[_selectedIndex]],
+        children: <Widget>[Expanded(child: _pages[_selectedIndex])],
       ),
     );
   }
